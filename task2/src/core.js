@@ -1,7 +1,7 @@
 //Напишите функцию, которая проверяет, является ли число целым используя побитовые операторы
 function isInteger(n) {
-    var x = parseFloat(value);
-    return !isNaN(value) && (x | 0) === x;
+    var x = parseFloat(n);
+    return !isNaN(n) && (x | 0) === x;
 }
 
 //Напишите функцию, которая возвращает массив четных чисел от 2 до 20 включительно
@@ -15,7 +15,7 @@ function even() {
 //Напишите функцию, считающую сумму чисел до заданного используя цикл
 function sumTo(n) {
     var total = 0;
-    for (var i = 1; i <= N; i++) {
+    for (var i = 1; i <= n; i++) {
         total += i;
     }
     return total;
@@ -25,23 +25,23 @@ function sumTo(n) {
 function recSumTo(n) {
     if (n == 1) return 1;
     return n + sumTo(n - 1);
-    
+
 }
 
 
 //Напишите функцию, считающую факториал заданного числа
-function factorial(n) { 
+function factorial(n) {
     return (n != 1) ? n * factorial(n - 1) : 1;
 }
 
 //Напишите функцию, которая определяет, является ли число двойкой, возведенной в степень
-function isBinary(n) { 
-    return (Math.log(x)/Math.log(2)) % 1 === 0;
+function isBinary(n) {
+    return (Math.log(n) / Math.log(2)) % 1 === 0;
 }
 
 //Напишите функцию, которая находит N-е число Фибоначчи
-function fibonacci(n) { 
-    return n <= 1 ? n : fib(n - 1) + fib(n - 2);
+function fibonacci(n) {
+    return n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 /** Напишите функцию, которая принимает начальное значение и функцию операции
@@ -55,7 +55,17 @@ function fibonacci(n) {
  * console.log(sumFn(5)) - 15
  * console.log(sumFn(3)) - 18
  */
-function getOperationFn(initialValue, operatorFn) { }
+
+function getOperationFn(initialValue, operatorFn) {
+    let storedValue = initialValue;
+    if (!operatorFn) {
+        return () => storedValue;
+    }
+    return (newValue) => {
+        storedValue = operatorFn(storedValue, newValue);
+        return storedValue;
+    };
+}
 
 /**
  * Напишите функцию создания генератора арифметической последовательности.
@@ -73,22 +83,28 @@ function getOperationFn(initialValue, operatorFn) { }
  * console.log(generator()); // 7
  * console.log(generator()); // 9
  */
-function sequence(start, step) { 
-    var generation = function(){
-        if(start==undefined){
-         start = 0;
-         start = start + step;
+function sequence(start, step) {
+    var generation = function () {
+        if (start === undefined) {
+            start = 0;
         }
-        else if(step == undefined){
-         step = 1;
-         start = start + step;
+        else if (step === undefined) {
+            step = 1;
+            start = start + step;
         }
-        else{
-         start+=step;
+        else {
+            if( start === 1 && step === 1)
+            {
+                start += step;
+                return start;
+            }
+            res = start;
+            start += step;
+            return res;
         }
         return start;
-       }
-       return generation;
+    }
+    return generation;
 }
 
 /**
@@ -108,26 +124,30 @@ function sequence(start, step) {
 function deepEqual(firstObject, secondObject) {
     if (firstObject === secondObject) {
         return true;
-      }
-      else if ((typeof firstObject == "object" && firstObject != null) && (typeof secondObject == "object" && secondObject != null)) {
-        if (Object.keys(firstObject).length != Object.keys(secondObject).length)
-          return false;
-    
-        for (var prop in firstObject) {
-          if (y.hasOwnProperty(prop))
-          {  
-            if (! deepEqual(firstObject[prop], secondObject[prop]))
-              return false;
-          }
-          else
+    }
+
+    if (typeof firstObject === "number" && isNaN(firstObject) && typeof secondObject === "number" && isNaN(secondObject)) {
+        return true;
+    }
+
+    if (typeof firstObject != "object" || firstObject === null || typeof secondObject != "object" || secondObject === null) {
+        return false;
+    }
+
+    let keysA = Object.keys(firstObject), keysB = Object.keys(secondObject);
+
+
+    if (keysA.length !== keysB.length) {
+        return false;
+    }
+
+    for (let key of keysA) {
+        if (!keysB.includes(key) || !deepEqual(firstObject[key], secondObject[key])) {
             return false;
         }
-        
-        return true;
-      }
-      else 
-        return false;
- }
+    }
+    return true;
+}
 
 module.exports = {
     isInteger,
@@ -141,3 +161,4 @@ module.exports = {
     sequence,
     deepEqual,
 };
+
