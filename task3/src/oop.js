@@ -4,6 +4,8 @@
  * Реализовать метод, который возвращает расстояние от точки до центра координат (0, 0)
  */
 class Point {
+    x
+    y
     constructor(x, y) {
         if (x === undefined) {
             x = 0;
@@ -14,8 +16,8 @@ class Point {
         this.x = x;
         this.y = y;
     }
-    
-    distance(){
+
+    distance() {
         return Math.sqrt((Math.pow((this.x), 2) + Math.pow((this.y), 2)))
     }
 }
@@ -26,11 +28,23 @@ class Point {
  * Реализовать статический метод, который возвращает расстояние между Point3D.
  */
 class Point3D extends Point {
-    constructor(x, y, z)
-    {
+    z
+    constructor(x, y, z) {
+        if (z === undefined) {
+            z = 0;
+        }
+        super(x, y)
+        this.z = z;
+
 
     }
-    static vectorLength(a, b) { }
+    static vectorLength(a, b) {
+        return Math.sqrt(
+            Math.pow(a.x - b.x, 2) +
+            Math.pow(a.y - b.y, 2) +
+            Math.pow(a.z - b.z, 2)
+        );
+    }
 }
 
 /**
@@ -39,10 +53,54 @@ class Point3D extends Point {
  * Для тех, кто доверяет, но проверяет: написать тесты на методы класса (oop.spec.js)
  */
 class Queue {
-    push;
-    pop;
-    size;
-    clear;
+
+
+
+    constructor(args) {
+        if(args === undefined)
+        {this.elements = [];
+            this.size = 0;
+        }else if(typeof(args)==='number')
+        {
+            this.elements = [args];
+            this.size = 1;
+        }else if(typeof(args)==='object')
+        {
+            this.size = 0;
+            this.elements =[];
+            for (let i = 0; i < args.length; i++) {
+                this.elements.push(args[i]);
+                this.size++;
+            }
+        }
+    }
+
+    push(...args) {
+        if(typeof(args) === 'object'){
+            for (let i = 0; i < args.length; i++) {
+                this.elements.push(args[i]);
+                this.size++;
+            }
+        }
+        else{
+            this.elements.push(args);
+            this.size++;
+        }
+    }
+
+    pop() {
+        if (this.elements.length <= 0) {
+            return undefined;
+        }
+        let elem = this.elements.shift();
+        this.size--;
+        return elem;
+    }
+    
+    clear(){
+        this.elements.length = 0;
+        this.size = 0;
+    }
 }
 
 module.exports = {
