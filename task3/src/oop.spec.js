@@ -87,7 +87,12 @@ describe('ООП', () => {
         it('методы работают корректно ', () => {
             const queue = new core.Queue([1,-2,3,5]);
            // TODO: ваши тесты
+            const point = new core.Point(3, 4);
+            assert.strictEqual(point.distance(), 5);
             assert.strictEqual(true, true);
+            queue.clear();
+            assert.strictEqual(queue.size, 0);
+        
         });
     });
 });
